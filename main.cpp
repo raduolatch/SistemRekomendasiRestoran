@@ -1,10 +1,4 @@
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 struct Restoran {
@@ -82,7 +76,35 @@ void tampilkanRekomendasi(const vector<Restoran>& restoran) {
     cout << "(Skor rekomendasi = rating / (jarak + 1))\n";
     tampilkanRestoran(rekomendasi);
 }
+void tampilPencarianKat(const vector<Restoran>& restoran, string jenis){
+    int urutan=0;
+    vector<Restoran> pencarianKat=restoran;
+    for(int i=0;i<pencarianKat.size();i++){
+        if(pencarianKat[i].kategori==jenis){
+            cout << setw(4) << ++urutan
+             << setw(25) << restoran[i].nama
+             << setw(18) << restoran[i].kategori
+             << setw(24) << restoran[i].alamat
+             << setw(7) << restoran[i].rating << "/5"
+             << setw(12) << restoran[i].jarak << '\n';
+        }
+    }
+}
+void tampilJarak(const vector<Restoran>& restoran, int distance){
+    vector<Restoran> pencarianJarak=restoran;
+    int a=0;
 
+    for(int i=0;i<pencarianJarak.size();i++){
+        if(pencarianJarak[i].jarak>=distance && pencarianJarak[i].jarak<distance+1){
+            cout << setw(4) << ++a
+             << setw(25) << restoran[i].nama
+             << setw(18) << restoran[i].kategori
+             << setw(24) << restoran[i].alamat
+             << setw(7) << restoran[i].rating << "/5"
+             << setw(12) << restoran[i].jarak << '\n';
+        }
+    }
+}
 int bacaPilihan() {
     int pilihan;
     while (!(cin >> pilihan)) {
@@ -95,14 +117,18 @@ int bacaPilihan() {
 
 int main() {
     vector<Restoran> restoran = {
-        {"Soto Kesawan", "Soto Medan", "Jl. Ahmad Yani No. 116", 4.5, 1.2},
-        {"Bihun Bebek Asie", "Bihun Bebek", "Jl. Kumango No. 15", 4.6, 1.0},
-        {"Mie Aceh Titi Bobrok", "Mie Aceh", "Jl. Setia Budi No. 17-D", 4.4, 3.5},
-        {"Rumah Makan Tabona", "Masakan India", "Jl. Mangkubumi No. 17", 4.6, 1.8},
-        {"Rumah Makan Sipirok", "Masakan Batak", "Jl. Sunggal No. 14", 4.5, 4.2},
-        {"Tip Top Restaurant", "Masakan Eropa", "Jl. Ahmad Yani No. 92", 4.4, 1.0},
-        {"Ucok Durian", "Durian", "Jl. Wahid Hasyim No. 30-32", 4.3, 2.7},
-        {"Merdeka Walk", "Pusat Kuliner", "Jl. Balai Kota", 4.5, 1.4}
+        {"Tianlala", "Minuman", "Jl.Karya Wisata", 4.7, 2.1},
+        {"Soto Kesawan", "Makanan", "Jl. Ahmad Yani No. 116", 4.5, 1.2},
+        {"Bihun Bebek Asie", "Makanan", "Jl. Kumango No. 15", 4.6, 1.0},
+        {"Waiting List Coffee", "Minuman", "Jl. Berdikari", 4.7, 0.7},
+        {"Mie Aceh Titi Bobrok", "Makanan", "Jl. Setia Budi No. 17-D", 4.4, 3.5},
+        {"Rumah Makan Tabona", "Makanan", "Jl. Mangkubumi No. 17", 4.6, 1.8},
+        {"Rumah Makan Sipirok", "Makanan", "Jl. Sunggal No. 14", 4.5, 4.2},
+        {"Cold 'N Brew", "Minuman", "Jl. Dr. Mansyur", 4.1, 0.9},
+        {"Tip Top Restaurant", "Makanan", "Jl. Ahmad Yani No. 92", 4.4, 1.0},
+        {"Ucok Durian", "Makanan", "Jl. Wahid Hasyim No. 30-32", 4.3, 2.7},
+        {"Moo Coffee", "Minuman", "Jl. Perdana", 4.9, 2.3},
+        {"Merdeka Walk", "Makanan", "Jl. Balai Kota", 4.5, 1.4}
     };
 
     cout << "===============================================\n";
@@ -118,6 +144,8 @@ int main() {
         cout << "2. Urutkan berdasarkan rating tertinggi\n";
         cout << "3. Urutkan berdasarkan jarak terdekat\n";
         cout << "4. Tampilkan semua restoran\n";
+        cout << "5. Cari berdasarkan kategori jenis (makanan/minuman)\n";
+        cout << "6. Cari berdasarkan jarak\n";
         cout << "0. Keluar\n";
         cout << "Pilihan Anda: ";
         pilihan = bacaPilihan();
@@ -139,6 +167,23 @@ int main() {
         case 4:
             tampilkanRestoran(restoran);
             break;
+        case 5:{
+            vector<Restoran> hasil=restoran;
+            string jenis;
+
+            cout<<"Silakan masukkan kategori (Makanan/Minuman): ";
+            cin>>jenis;
+            
+            tampilPencarianKat(hasil, jenis);
+            break;
+        }
+        case 6:{
+            int distance;
+            vector<Restoran> hasil=restoran;
+            cout<<"Cari berdasarkan jarak: ";
+            cin>>distance;
+            tampilJarak(hasil, distance);
+        }
         case 0:
             cout << "\nTerima kasih telah menggunakan sistem rekomendasi.\n";
             break;
